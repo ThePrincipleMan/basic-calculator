@@ -1,6 +1,7 @@
 let firstOperand = ''
 let secondOperand = ''
 let operation = null
+let shouldResetScreen = false
 
 const screen = document.getElementById('screen')
 const numberButtons = document.querySelectorAll('[data-number]')
@@ -17,15 +18,20 @@ numberButtons.forEach( (button) => button.addEventListener('click', () => append
 operatorButtons.forEach( (button) => button.addEventListener('click', () => setOperator(button.textContent)) )
 
 function appendNum(num){
-    if(screen.textContent === '0') screen.textContent = num
-    else screen.textContent += num
+    if(shouldResetScreen) resetScreen()
+    if(screen.textContent === '0')
+        screen.textContent = num
+    else if(operation === null) screen.textContent += num
+    else{
+        secondOperand += num
+        screen.textContent = `${firstOperand} ${operation} ${secondOperand}`
+    }
 }
 
 function setOperator(operator){
     firstOperand = screen.textContent
     operation = operator
-    screen.textContent = `${firstOperand} ${operation}` // second operand ka kuch soch lo varna secondary screen shit vapas karna padega
-                                                    // we can add in append num that if firstOperand !== '' then do this aise
+    screen.textContent = `${firstOperand} ${operation}`
 }
 
 function clear(){
@@ -44,6 +50,28 @@ function deleteNum(){
 }
 
 function evaluate(){
-    if(operation == null) return
+    if(operation === null || secondOperand === '') return
+    let ans = executeOperation()
+    screen.textContent = `${ans}`
+    firstOperand = ''
+    secondOperand = ''
+    operation = null
+    shouldResetScreen = true
+}
 
+function executeOperation(){
+    let a = firstOperand
+    let b = secondOperand
+    a = Number(a)
+    b = Number(b)
+    let ans = 0
+    if(operation === '+')
+        return a+b
+    else if(operation === '-')
+        return a-b
+    else if(operation === '*')
+        return a*b
+    else if(operation === '/')
+        return a/b
+    else alert("Enter the correct operation man!!")
 }

@@ -40,6 +40,7 @@ p{
 
 .screen{
     background-color: var(--gray);
+    min-height: 50px;
     text-align: right;
     grid-column: span 4;
     padding: 8px 14px;
