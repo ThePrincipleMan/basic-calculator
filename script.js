@@ -51,6 +51,12 @@ function deleteNum(){
 
 function evaluate(){
     if(operation === null || secondOperand === '') return
+    if(operation === '/' && secondOperand === '0'){
+        clear()
+        screen.textContent = 'Pehli fursat mai nikal tu'
+        shouldResetScreen = true
+        return
+    }
     let ans = executeOperation()
     screen.textContent = `${ans}`
     firstOperand = ''
